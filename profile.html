@@ -1,0 +1,3778 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TutorApp — Profile</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ════════════════════════════════════════
+       RESET & CSS VARIABLES
+    ════════════════════════════════════════ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      /* Colors — clean professional palette from reference */
+      --teal: #00A896;
+      --teal-dark: #008F7E;
+      --teal-light: #E6F7F5;
+      --teal-mid: #99D9D3;
+      --teal-pale: #F0FAF9;
+      --bg: #F5F7FA;
+      --white: #FFFFFF;
+      --text: #1A2332;
+      --text-mid: #4A5568;
+      --muted: #9AA5B4;
+      --border: #E8EDF3;
+      --green: #38D68A;
+      --gold: #F5B942;
+      --red: #E05A7A;
+
+      /* Shadows */
+      --shadow-xs: 0 1px 4px rgba(0, 0, 0, 0.06);
+      --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.08);
+      --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.10);
+
+      /* Radii */
+      --r: 16px;
+      --r-sm: 10px;
+      --r-xs: 7px;
+
+      /* Layout */
+      --header-h: 60px;
+      --subnav-h: 46px;
+      --sidebar-w: 168px;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════════════════
+       TOP HEADER  — white with shadow, clean
+    ════════════════════════════════════════ */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      height: var(--header-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .h-ham {
+      display: flex;
+      flex-direction: column;
+      gap: 4.5px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .h-ham span {
+      display: block;
+      width: 20px;
+      height: 1.8px;
+      background: var(--text-mid);
+      border-radius: 2px;
+    }
+
+    .h-logo {
+      font-weight: 800;
+      font-size: 19px;
+      color: var(--teal);
+      letter-spacing: -.02em;
+      flex-shrink: 0;
+    }
+
+    .h-logo span {
+      color: var(--text);
+    }
+
+    /* Header nav */
+    .h-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex: 1;
+      margin: 0 8px;
+      justify-content: center;
+    }
+
+    .h-nav a {
+      text-decoration: none;
+      color: var(--text-mid);
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 7px 13px;
+      border-radius: 8px;
+      transition: all .18s;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .h-nav a:hover {
+      color: var(--teal-dark);
+      background: var(--teal-pale);
+    }
+
+    .h-nav a.active {
+      color: var(--teal-dark);
+      font-weight: 700;
+    }
+
+    .h-nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 13px;
+      right: 13px;
+      height: 2.5px;
+      background: var(--teal);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .h-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .h-lang {
+      background: none;
+      color: var(--text-mid);
+      border: 1.5px solid var(--border);
+      border-radius: 50px;
+      padding: 6px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .h-lang:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+
+    .h-coins {
+      background: var(--teal-pale);
+      border-radius: 50px;
+      padding: 6px 14px;
+      color: var(--teal-dark);
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border: 1.5px solid var(--teal-light);
+    }
+
+    .coins-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .h-notif {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-mid);
+      transition: border-color .2s, background .2s;
+    }
+
+    .h-notif:hover {
+      background: var(--teal-light);
+      border-color: var(--teal);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: var(--teal);
+      border: 2px solid var(--white);
+      color: white;
+      font-size: 9px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .h-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--teal-mid);
+      flex-shrink: 0;
+      cursor: pointer;
+      background: linear-gradient(135deg, #99D9D3, #00A896);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    /* ════════════════════════════════════════
+       SUBNAV — скрыт
+    ════════════════════════════════════════ */
+    .subnav {
+      display: none !important;
+    }
+
+    /* ════════════════════════════════════════
+       APP BODY — starts right after header
+    ════════════════════════════════════════ */
+    .app-body {
+      display: flex;
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════════════════
+       PROMO PANEL (вместо sidebar)
+    ════════════════════════════════════════ */
+    :root {
+      --promo-w: 220px;
+    }
+
+    .sidebar {
+      display: none !important;
+    }
+
+    .promo-panel {
+      width: var(--promo-w);
+      height: 100%;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .promo-top {
+      background: linear-gradient(160deg, #e8faf8 0%, #c8f0eb 100%);
+      padding: 22px 18px 18px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .promo-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      color: var(--teal-dark);
+      margin-bottom: 8px;
+    }
+
+    .promo-top h3 {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 3px;
+    }
+
+    .promo-top h3 span {
+      color: var(--teal);
+    }
+
+    .promo-checklist {
+      list-style: none;
+      margin: 11px 0 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .promo-checklist li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-mid);
+      font-weight: 500;
+    }
+
+    .promo-checklist li::before {
+      content: '';
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='white' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .promo-start-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 10px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      justify-content: center;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 4px 14px rgba(0, 168, 150, .28);
+    }
+
+    .promo-start-btn:hover {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+    }
+
+    .promo-img-wrap {
+      position: relative;
+      height: 155px;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(170deg, #d4f5f0 0%, #a8e6e0 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .promo-img-wrap img {
+      height: 90%;
+      width: auto;
+      object-fit: contain;
+      object-position: bottom;
+      filter: drop-shadow(0 4px 12px rgba(0, 120, 110, .18));
+    }
+
+    .promo-sparkle {
+      position: absolute;
+      top: 14px;
+      font-size: 14px;
+      opacity: 0.5;
+      animation: twinkle 2.5s ease-in-out infinite;
+    }
+
+    .promo-sparkle:nth-child(2) {
+      left: 14px;
+      animation-delay: 0s;
+    }
+
+    .promo-sparkle:nth-child(3) {
+      right: 18px;
+      animation-delay: .9s;
+      font-size: 10px;
+      top: 26px;
+    }
+
+    .promo-sparkle:nth-child(4) {
+      left: 50%;
+      animation-delay: 1.6s;
+      font-size: 11px;
+      top: 6px;
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: .5;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    .promo-community {
+      padding: 14px 18px 16px;
+      flex-shrink: 0;
+    }
+
+    .promo-community h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .promo-community p {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-bottom: 9px;
+      line-height: 1.45;
+    }
+
+    .promo-avatars {
+      display: flex;
+      align-items: center;
+    }
+
+    .promo-avatars .pav {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--white);
+      margin-right: -7px;
+      overflow: hidden;
+      background: var(--teal-light);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--teal-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pav-count {
+      background: var(--teal-pale) !important;
+      color: var(--teal-dark) !important;
+      font-size: 9px !important;
+      margin-right: 0 !important;
+      margin-left: 10px;
+    }
+
+    /* ════════════════════════════════════════
+       MAIN SCROLL AREA
+    ════════════════════════════════════════ */
+    .main-scroll {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      height: 100%;
+    }
+
+    .main-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .main-scroll::-webkit-scrollbar-thumb {
+      background: var(--teal-mid);
+      border-radius: 4px;
+    }
+
+    /* ════════════════════════════════════════
+       PAGE GRID
+    ════════════════════════════════════════ */
+    .page-grid {
+      display: grid;
+      grid-template-columns: 1fr 284px;
+      gap: 18px;
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 20px 20px 50px;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════════════
+       CARDS
+    ════════════════════════════════════════ */
+    .card {
+      background: var(--white);
+      border-radius: var(--r);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .card:last-child {
+      margin-bottom: 0;
+    }
+
+    .sec-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .sec-title svg {
+      color: var(--teal);
+    }
+
+    /* ════════════════════════════════════════
+       PROFILE HERO CARD
+    ════════════════════════════════════════ */
+    .profile-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    /* Banner — blue-to-teal gradient mesh matching reference image */
+    .profile-banner {
+      height: 148px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: linear-gradient(135deg, #1A6EBB 0%, #00A896 55%, #0EC5AD 100%);
+    }
+
+    /* Decorative SVG mesh overlay on banner */
+    .profile-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 30% 40%, rgba(255, 255, 255, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(0, 168, 150, 0.35) 0%, transparent 55%);
+    }
+
+    .banner-wave {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0.22;
+    }
+
+    .banner-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .banner-placeholder svg {
+      opacity: 0.65;
+    }
+
+    .banner-edit-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0);
+      transition: background .25s;
+      cursor: pointer;
+    }
+
+    .banner-edit-overlay:hover {
+      background: rgba(0, 0, 0, 0.18);
+    }
+
+    .banner-edit-overlay:hover .banner-edit-icon {
+      opacity: 1;
+    }
+
+    .banner-edit-icon {
+      opacity: 0;
+      transition: opacity .2s;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 50px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--teal-dark);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Profile body */
+    .profile-body {
+      padding: 0 22px 20px;
+    }
+
+    /* Avatar row */
+    .profile-av-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-top: -42px;
+      margin-bottom: 14px;
+    }
+
+    .av-outer {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    /* Camera circle avatar */
+    .av-placeholder {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 4px solid var(--white);
+      box-shadow: 0 3px 16px rgba(0, 168, 150, 0.25);
+      background: linear-gradient(135deg, #99D9D3, #00A896);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 3px;
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.85);
+      cursor: pointer;
+    }
+
+    .av-placeholder svg {
+      opacity: 0.8;
+    }
+
+    #avatarImg {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 4px solid var(--white);
+      box-shadow: 0 3px 16px rgba(0, 168, 150, 0.25);
+      object-fit: cover;
+      display: block;
+    }
+
+    .av-live {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--green);
+      border: 2.5px solid var(--white);
+    }
+
+    .av-edit-badge {
+      position: absolute;
+      bottom: 2px;
+      right: 0px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-mid);
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    #avatarFileInput,
+    #bannerFileInput {
+      display: none;
+    }
+
+    /* Edit button */
+    .profile-btns {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    #editProfileBtn {
+      padding: 8px 16px;
+      border-radius: var(--r-sm);
+      background: var(--white);
+      color: var(--text-mid);
+      border: 1.5px solid var(--border);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color .2s, color .2s;
+    }
+
+    #editProfileBtn:hover {
+      border-color: var(--teal);
+      color: var(--teal-dark);
+    }
+
+    .edit-actions {
+      display: none;
+      gap: 8px;
+    }
+
+    #saveProfileBtn {
+      padding: 8px 18px;
+      border-radius: var(--r-sm);
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    #saveProfileBtn:hover {
+      background: var(--teal-dark);
+    }
+
+    #cancelProfileBtn {
+      padding: 8px 14px;
+      border-radius: var(--r-sm);
+      background: var(--bg);
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    #cancelProfileBtn:hover {
+      background: var(--border);
+    }
+
+    /* Name */
+    #profileName {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 3px;
+      letter-spacing: -0.02em;
+    }
+
+    .profile-handle {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 9px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .online-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    #profileBio {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 18px;
+      font-style: italic;
+    }
+
+    #profileBio.has-bio {
+      color: var(--text-mid);
+      font-style: normal;
+    }
+
+    /* EDIT inputs */
+    #editName {
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--text);
+      border: 1.5px solid var(--teal);
+      border-radius: var(--r-sm);
+      padding: 8px 14px;
+      width: 100%;
+      outline: none;
+      background: var(--teal-pale);
+      margin-bottom: 8px;
+      font-family: 'DM Sans', sans-serif;
+      transition: box-shadow .2s;
+      display: none;
+    }
+
+    #editName:focus {
+      box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.18);
+    }
+
+    #editBio {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.6;
+      border: 1.5px solid var(--teal);
+      border-radius: var(--r-sm);
+      padding: 10px 14px;
+      width: 100%;
+      outline: none;
+      background: var(--teal-pale);
+      resize: vertical;
+      min-height: 70px;
+      margin-bottom: 16px;
+      font-family: 'DM Sans', sans-serif;
+      transition: box-shadow .2s;
+      display: none;
+    }
+
+    #editBio:focus {
+      box-shadow: 0 0 0 3px rgba(0, 168, 150, 0.18);
+    }
+
+    /* Stats bar — horizontal segmented grid */
+    .p-stats {
+      display: flex;
+      background: var(--bg);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .p-stat {
+      flex: 1;
+      padding: 14px 10px;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      transition: background .18s;
+      cursor: default;
+    }
+
+    .p-stat:last-child {
+      border-right: none;
+    }
+
+    .p-stat:hover {
+      background: var(--teal-pale);
+    }
+
+    .p-stat-val {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .p-stat-lbl {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 500;
+      text-transform: none;
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* ════════════════════════════════════════
+       COURSES CARD — empty + list states
+    ════════════════════════════════════════ */
+    .courses-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--teal-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: background .18s;
+    }
+
+    .link-btn:hover {
+      background: var(--teal-light);
+    }
+
+    .courses-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px 16px;
+      gap: 10px;
+    }
+
+    .courses-empty-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--teal-pale);
+      border: 1.5px solid var(--teal-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .courses-empty h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .courses-empty p {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .btn-primary {
+      padding: 9px 20px;
+      border-radius: 50px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      margin-top: 4px;
+    }
+
+    .btn-primary:hover {
+      background: var(--teal-dark);
+      transform: translateY(-1px);
+    }
+
+    .course-item {
+      background: var(--bg);
+      border-radius: var(--r-sm);
+      padding: 12px 14px;
+      margin-bottom: 9px;
+      border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+
+    .course-item:hover {
+      border-color: var(--teal-mid);
+    }
+
+    .course-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .course-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .course-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .course-pct {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal-dark);
+    }
+
+    .prog-track {
+      height: 5px;
+      background: var(--teal-light);
+      border-radius: 50px;
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--teal-dark), var(--teal));
+    }
+
+    /* ════════════════════════════════════════
+       COMPOSE + POST FEED
+    ════════════════════════════════════════ */
+    .compose-card {
+      background: var(--white);
+      border-radius: var(--r);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 12px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .compose-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid var(--border);
+      background: linear-gradient(135deg, #99D9D3, #00A896);
+    }
+
+    .compose-right {
+      flex: 1;
+    }
+
+    .compose-ta {
+      width: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      color: var(--text);
+      background: transparent;
+      line-height: 1.5;
+      min-height: 36px;
+      padding: 4px 0;
+    }
+
+    .compose-ta::placeholder {
+      color: var(--muted);
+    }
+
+    .compose-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 8px 0;
+    }
+
+    .compose-acts {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .compose-icon {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 8px;
+      transition: background .18s;
+    }
+
+    .compose-icon:hover {
+      background: var(--teal-light);
+    }
+
+    .compose-send {
+      margin-left: auto;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+    }
+
+    .compose-send:hover {
+      background: var(--teal-dark);
+      transform: scale(1.02);
+    }
+
+    /* Post card */
+    .post-card {
+      background: var(--white);
+      border-radius: var(--r);
+      padding: 15px 17px;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-xs);
+      transition: box-shadow .2s;
+      animation: fadeUp .35s ease both;
+    }
+
+    .post-card:hover {
+      box-shadow: var(--shadow-sm);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .post-inner {
+      display: flex;
+      gap: 12px;
+    }
+
+    .post-av-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .post-av {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .post-line {
+      flex: 1;
+      width: 1.5px;
+      background: var(--border);
+      margin: 6px 0;
+      min-height: 20px;
+    }
+
+    .post-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7px;
+    }
+
+    .post-author {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .post-time {
+      margin-left: auto;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .post-text {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .post-acts {
+      display: flex;
+      gap: 3px;
+    }
+
+    .pact {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 9px;
+      border-radius: var(--r-xs);
+      transition: background .18s, color .18s;
+    }
+
+    .pact:hover {
+      background: var(--teal-light);
+      color: var(--teal-dark);
+    }
+
+    .pact.liked {
+      color: var(--red);
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(1);
+      }
+
+      35% {
+        transform: scale(1.5);
+      }
+
+      65% {
+        transform: scale(0.85);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pact.popping {
+      animation: pop .38s ease;
+    }
+
+    /* ════════════════════════════════════════
+       RIGHT WIDGETS COLUMN
+    ════════════════════════════════════════ */
+    .col-right {
+      position: sticky;
+      top: 12px;
+    }
+
+    /* Achievements */
+    .achievement-empty {
+      background: var(--teal-pale);
+      border-radius: var(--r-sm);
+      padding: 20px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.55;
+      border: 1.5px dashed var(--teal-mid);
+    }
+
+    .achievement-empty svg {
+      margin-bottom: 8px;
+      opacity: 0.4;
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 7px;
+    }
+
+    .badge-chip {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: var(--teal-pale);
+      border-radius: 10px;
+      padding: 9px 6px;
+      cursor: pointer;
+      transition: background .18s, transform .18s;
+    }
+
+    .badge-chip:hover {
+      background: var(--teal-light);
+      transform: translateY(-2px);
+    }
+
+    .badge-chip span {
+      font-size: 8.5px;
+      font-weight: 600;
+      color: var(--teal-dark);
+      text-align: center;
+    }
+
+    .badge-tip {
+      position: absolute;
+      bottom: calc(100% + 7px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 99;
+      transition: opacity .18s;
+      box-shadow: var(--shadow-md);
+    }
+
+    .badge-tip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: var(--text);
+    }
+
+    .badge-chip:hover .badge-tip {
+      opacity: 1;
+    }
+
+    /* Clubs */
+    .club-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 6px;
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      transition: background .18s;
+      margin-bottom: 4px;
+    }
+
+    .club-item:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .club-item:hover {
+      background: var(--teal-pale);
+    }
+
+    .club-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 15px;
+      overflow: hidden;
+    }
+
+    .club-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .club-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .club-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .club-members {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .club-join-btn {
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      border: 1px solid var(--teal-mid);
+      border-radius: 50px;
+      padding: 4px 11px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s, color .2s;
+      flex-shrink: 0;
+    }
+
+    .club-join-btn:hover {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+
+    .club-join-btn.joined {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+
+    .clubs-more-btn {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      background: none;
+      border: none;
+      color: var(--teal-dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: var(--r-sm);
+      text-align: center;
+      transition: background .18s;
+    }
+
+    .clubs-more-btn:hover {
+      background: var(--teal-light);
+    }
+
+    /* Activity */
+    .activity-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+
+    .activity-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text-mid);
+      font-weight: 500;
+    }
+
+    .activity-count {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .status-dot-green {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    /* Pomodoro Ring Timer */
+    .pomo-card {
+      text-align: center;
+      padding: 16px 16px 14px;
+    }
+
+    .pomo-ring-wrap {
+      position: relative;
+      display: inline-block;
+      margin: 6px 0 12px;
+    }
+
+    .pomo-svg {
+      transform: rotate(-90deg);
+      display: block;
+    }
+
+    .pomo-ring-bg {
+      fill: none;
+      stroke: var(--teal-light);
+      stroke-width: 7;
+    }
+
+    .pomo-ring-fill {
+      fill: none;
+      stroke: var(--teal);
+      stroke-width: 7;
+      stroke-linecap: round;
+      transition: stroke-dashoffset .6s linear;
+    }
+
+    .pomo-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pomo-time {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .pomo-mode-lbl {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .pomo-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pomo-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      color: var(--text-mid);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background .2s, transform .15s;
+    }
+
+    .pomo-btn:hover {
+      background: var(--teal-light);
+      border-color: var(--teal);
+      color: var(--teal-dark);
+      transform: scale(1.06);
+    }
+
+    .pomo-btn.play {
+      width: 40px;
+      height: 40px;
+      background: var(--teal);
+      color: #fff;
+      border: none;
+    }
+
+    .pomo-btn.play:hover {
+      background: var(--teal-dark);
+    }
+
+    .pomo-tabs {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .pomo-tab {
+      font-size: 11.5px;
+      font-weight: 600;
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      padding: 5px 13px;
+      cursor: pointer;
+      transition: all .18s;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .pomo-tab.on {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+
+    .pomo-session {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Suggested people */
+    .sf-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sf-row:last-child {
+      border-bottom: none;
+    }
+
+    .sf-av {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .sf-av img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sf-av-init {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    .sf-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      border: 2px solid var(--white);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    .sf-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .sf-tag {
+      font-size: 10.5px;
+      color: var(--muted);
+    }
+
+    .sf-follow {
+      margin-left: auto;
+      background: var(--teal-light);
+      color: var(--teal-dark);
+      border: 1px solid var(--teal-mid);
+      border-radius: 50px;
+      padding: 4px 11px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+
+    .sf-follow:hover {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+
+    .sf-follow:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(14px);
+      background: var(--text);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: opacity .25s, transform .25s;
+      white-space: nowrap;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Auth overlay */
+    #auth-loading-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    #auth-loading-overlay .spin {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 3px solid var(--teal-light);
+      border-top-color: var(--teal);
+      animation: spin44 0.75s linear infinite;
+    }
+
+    #auth-loading-overlay p {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    @keyframes spin44 {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--teal-mid);
+      border-radius: 4px;
+    }
+
+    /* ══════════════════════════════════════════
+       МОБИЛЬНАЯ НАВИГАЦИЯ — скрыта на десктопе
+    ══════════════════════════════════════════ */
+    .mob-nav {
+      display: none;
+    }
+
+    /* ══════════════════════════════════════════
+       MOBILE — profile.html
+    ══════════════════════════════════════════ */
+    @media (max-width: 768px) {
+
+      /* Разрешаем скролл на body */
+      html,
+      body {
+        overflow: auto;
+        height: auto;
+      }
+
+      /* --- Хедер компактный --- */
+      header {
+        padding: 0 12px;
+        gap: 8px;
+        height: 52px;
+      }
+
+      :root {
+        --header-h: 52px;
+      }
+
+      /* Прячем ненужное в хедере */
+      .h-nav {
+        display: none;
+      }
+
+      .h-lang {
+        display: none;
+      }
+
+      .h-coins {
+        display: none;
+      }
+
+      .h-ham {
+        display: none;
+      }
+
+      /* Логотип слева, уведомления + аватар справа */
+      .h-logo {
+        font-size: 17px;
+      }
+
+      .h-right {
+        gap: 8px;
+      }
+
+      .h-notif {
+        width: 32px;
+        height: 32px;
+      }
+
+      .h-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+      }
+
+      /* --- Мобильная нижняя навигация --- */
+      .mob-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 800;
+        background: var(--white);
+        border-top: 1.5px solid var(--border);
+        height: 56px;
+        align-items: stretch;
+        box-shadow: 0 -4px 18px rgba(0, 0, 0, .08);
+      }
+
+      .mob-nav a {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        text-decoration: none;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 600;
+        transition: color .18s;
+      }
+
+      .mob-nav a svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+      }
+
+      .mob-nav a.active {
+        color: var(--teal);
+      }
+
+      .mob-nav a.active svg {
+        stroke: var(--teal);
+      }
+
+      /* --- App body: статичный, скролл через страницу --- */
+      .app-body {
+        position: static;
+        top: auto;
+        display: flex;
+        flex-direction: column;
+        overflow: visible;
+        padding-top: var(--header-h);
+        padding-bottom: 56px;
+        /* место под нижнее меню */
+        min-height: 100vh;
+      }
+
+      /* --- Убираем боковую промо-панель --- */
+      .promo-panel {
+        display: none !important;
+      }
+
+      /* --- Main scroll: обычный поток --- */
+      .main-scroll {
+        overflow: visible;
+        height: auto;
+      }
+
+      /* --- Page grid: одна колонка --- */
+      .page-grid {
+        grid-template-columns: 1fr;
+        padding: 12px 12px 20px;
+        gap: 12px;
+        max-width: 100%;
+      }
+
+      /* --- Прячем правую колонку (виджеты) на телефоне --- */
+      .col-right {
+        display: none;
+      }
+
+      /* --- Профиль карточка --- */
+      .profile-banner {
+        height: 110px;
+      }
+
+      .profile-body {
+        padding: 0 14px 16px;
+      }
+
+      .profile-av-row {
+        margin-top: -36px;
+        margin-bottom: 10px;
+      }
+
+      .av-placeholder,
+      #avatarImg {
+        width: 70px;
+        height: 70px;
+      }
+
+      #profileName {
+        font-size: 18px;
+      }
+
+      .p-stats {
+        margin-top: 12px;
+      }
+
+      .p-stat {
+        padding: 10px 6px;
+      }
+
+      .p-stat-val {
+        font-size: 17px;
+      }
+
+      .p-stat-lbl {
+        font-size: 9px;
+      }
+
+      /* --- Карточки --- */
+      .card {
+        border-radius: 12px;
+        padding: 14px;
+        margin-bottom: 10px;
+      }
+
+      /* --- Compose card --- */
+      .compose-card {
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      .compose-ta {
+        font-size: 13px;
+      }
+
+      .compose-send {
+        padding: 7px 16px;
+        font-size: 12.5px;
+      }
+
+      /* --- Посты --- */
+      .post-card {
+        padding: 12px 14px;
+        border-radius: 12px;
+      }
+
+      /* --- Toast выше нижней навигации --- */
+      .toast {
+        bottom: 68px;
+      }
+
+      /* --- Visitor banner + auth overlay адаптация --- */
+      #visitorBanner {
+        padding: 6px 14px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ════════ AUTH LOADING OVERLAY ════════ -->
+  <div id="auth-loading-overlay">
+    <div class="spin"></div>
+    <p>Загрузка профиля...</p>
+  </div>
+
+  <!-- ════════ VISITOR BANNER (только на чужом профиле) ════════ -->
+  <div id="visitorBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:300;
+    background:var(--teal);color:#fff;padding:8px 20px;font-size:13px;font-weight:600;
+    display:none;align-items:center;justify-content:center;gap:12px;box-shadow:0 2px 8px rgba(0,168,150,.3);">
+    <span id="visitorBannerText">Вы смотрите чужой профиль</span>
+    <button onclick="window.location.href='profile.html'" style="background:rgba(255,255,255,.2);
+      color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;padding:3px 10px;
+      font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">← Мой профиль</button>
+  </div>
+
+  <!-- ════════════ TOP HEADER ════════════ -->
+  <header>
+    <div class="h-ham"><span></span><span></span><span></span></div>
+    <div class="h-logo" onclick="window.location.href='index.html'" style="cursor:pointer">Tutor<span>App</span></div>
+    <nav class="h-nav">
+      <a href="index.html">Лента</a>
+      <a href="Chat.html">Чат</a>
+      <a href="public.html">Обсуждения</a>
+      <a href="unique.html">Unique</a>
+      <a href="exam.html">Экзамены</a>
+      <a href="trainings.html">Тренинги</a>
+      <a href="profile.html" class="active">Профиль</a>
+    </nav>
+    <div class="h-right">
+      <button class="h-lang" id="langBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="2" y1="12" x2="22" y2="12" />
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </svg>
+        Рус
+      </button>
+      <div class="h-coins"><span class="coins-dot"></span><span id="coinsDisplay">1236</span></div>
+      <div class="h-notif">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+          <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+        </svg>
+        <span class="notif-badge">3</span>
+      </div>
+      <div class="h-avatar" id="headerAvatar" onclick="window.location.href='profile.html'">A</div>
+    </div>
+  </header>
+
+  <!-- ════════════ APP BODY ════════════ -->
+  <div class="app-body">
+
+    <!-- PROMO PANEL -->
+    <aside class="promo-panel">
+      <div class="promo-top">
+        <div class="promo-label">TutorApp Premium</div>
+        <h3>Стань репетитором<br>и <span>меняй жизни!</span></h3>
+        <ul class="promo-checklist">
+          <li>Больше учеников</li>
+          <li>Гибкий график</li>
+          <li>Высокий доход</li>
+          <li>Тысячи учеников</li>
+          <li>Поддержка 24/7</li>
+        </ul>
+        <button class="promo-start-btn" onclick="showToast('🚀 Переход на страницу регистрации...')">
+          Начать сейчас →
+        </button>
+      </div>
+      <div class="promo-img-wrap">
+        <span class="promo-sparkle">✦</span>
+        <span class="promo-sparkle">✦</span>
+        <span class="promo-sparkle">✦</span>
+        <img src="./assets/tutor-promo.png" alt="Tutor" onerror="this.style.display='none'">
+      </div>
+      <div class="promo-community">
+        <h4>Присоединяйся к сообществу</h4>
+        <p>Более 700+ репетиторов уже с нами</p>
+        <div class="promo-avatars">
+          <div class="pav" style="background:#c8f0eb;color:var(--teal-dark);">А</div>
+          <div class="pav" style="background:#fde8ef;color:#c0567a;">М</div>
+          <div class="pav" style="background:#e8ecff;color:#5060c0;">Д</div>
+          <div class="pav" style="background:#fef3e2;color:#c07830;">С</div>
+          <div class="pav pav-count">+700</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ════ MAIN SCROLL AREA ════ -->
+    <div class="main-scroll">
+      <div class="page-grid">
+
+        <!-- ══════════════ LEFT / MAIN COLUMN ══════════════ -->
+        <div class="col-left">
+
+          <!-- ── PROFILE HERO CARD ── -->
+          <div class="card profile-card">
+
+            <!-- Banner — gradient mesh matching reference image -->
+            <div class="profile-banner" id="bannerWrap" onclick="document.getElementById('bannerFileInput').click()">
+              <!-- Decorative SVG wave on banner -->
+              <svg class="banner-wave" viewBox="0 0 760 148" preserveAspectRatio="none" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 80 Q190 20 380 80 Q570 140 760 80 L760 148 L0 148 Z" fill="white" opacity="0.06" />
+                <path d="M0 100 Q190 40 380 100 Q570 160 760 100 L760 148 L0 148 Z" fill="white" opacity="0.04" />
+                <ellipse cx="600" cy="60" rx="180" ry="90" fill="white" opacity="0.04" />
+                <!-- Decorative grid lines -->
+                <path
+                  d="M100 0 L100 148 M200 0 L200 148 M300 0 L300 148 M400 0 L400 148 M500 0 L500 148 M600 0 L600 148 M700 0 L700 148"
+                  stroke="white" stroke-width="0.5" opacity="0.08" />
+                <path d="M0 40 L760 40 M0 80 L760 80 M0 120 L760 120" stroke="white" stroke-width="0.5"
+                  opacity="0.08" />
+              </svg>
+              <!-- Placeholder text (shown when no banner) -->
+              <div class="banner-placeholder" id="bannerPlaceholder">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="3" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+                Click to add a cover photo
+              </div>
+              <img id="bannerImg" src="" alt=""
+                style="display:none; width:100%; height:100%; object-fit:cover; opacity:0.85;">
+              <div class="banner-edit-overlay">
+                <div class="banner-edit-icon">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                  </svg>
+                  Change cover
+                </div>
+              </div>
+            </div>
+
+            <!-- Hidden file inputs -->
+            <input type="file" id="avatarFileInput" accept="image/*" onchange="handleAvatarUpload(this)">
+            <input type="file" id="bannerFileInput" accept="image/*" onchange="handleBannerUpload(this)">
+
+            <!-- Profile body -->
+            <div class="profile-body">
+              <!-- Avatar row + action buttons -->
+              <div class="profile-av-row">
+                <!-- Avatar -->
+                <div class="av-outer" onclick="document.getElementById('avatarFileInput').click()" title="Change photo">
+                  <div class="av-placeholder" id="avatarPlaceholder">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)"
+                      stroke-width="1.6">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+                  <img id="avatarImg" src="" alt="Avatar" style="display:none;">
+                  <!-- Edit pencil badge -->
+                  <div class="av-edit-badge"
+                    onclick="event.stopPropagation(); document.getElementById('avatarFileInput').click();">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                  </div>
+                  <div class="av-live" id="avLive" style="display:none;"></div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="profile-btns">
+                  <button id="editProfileBtn" onclick="enterEditMode()">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    Edit profile
+                  </button>
+                  <div class="edit-actions" id="editActions">
+                    <button id="saveProfileBtn" onclick="saveProfile()">Save</button>
+                    <button id="cancelProfileBtn" onclick="cancelEdit()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Name VIEW / EDIT -->
+              <h1 id="profileName">Loading...</h1>
+              <input type="text" id="editName" value="" placeholder="Your name">
+
+              <!-- Handle + online status -->
+              <div class="profile-handle" id="profileHandle">
+                <span id="handleText">@loading</span>
+                <span class="online-dot"></span>
+                <span>Online</span>
+              </div>
+
+              <!-- Bio VIEW / EDIT -->
+              <p id="profileBio">Tell us about yourself...</p>
+              <textarea id="editBio" placeholder="Tell us about yourself..."></textarea>
+
+              <!-- Stats grid — 4 columns -->
+              <div class="p-stats">
+                <div class="p-stat">
+                  <span class="p-stat-val" id="statPosts">0</span>
+                  <span class="p-stat-lbl">Posts</span>
+                </div>
+                <div class="p-stat">
+                  <span class="p-stat-val" id="statFriends">0</span>
+                  <span class="p-stat-lbl">Friends</span>
+                </div>
+                <div class="p-stat">
+                  <span class="p-stat-val" id="statClubs">0</span>
+                  <span class="p-stat-lbl">Clubs</span>
+                </div>
+                <div class="p-stat">
+                  <span class="p-stat-val" id="statStreak">0</span>
+                  <span class="p-stat-lbl">Days in a row</span>
+                </div>
+              </div>
+            </div>
+          </div><!-- /profile-card -->
+
+          <!-- ── MY COURSES CARD ── -->
+          <div class="card">
+            <div class="courses-header">
+              <div class="sec-title" style="margin-bottom:0;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15z" />
+                </svg>
+                MY COURSES
+              </div>
+              <button class="link-btn" onclick="showToast('📋 All courses...')">All courses →</button>
+            </div>
+
+            <!-- Courses container (empty by default) -->
+            <div id="coursesContainer">
+              <div class="courses-empty" id="coursesEmpty">
+                <div class="courses-empty-icon">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="1.5">
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                  </svg>
+                </div>
+                <h3>You don't have any courses yet</h3>
+                <p>Join clubs to find courses and start learning!</p>
+                <button class="btn-primary" onclick="showToast('🔍 Browsing courses...')">Browse courses</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── COMPOSE CARD ── -->
+          <div class="compose-card">
+            <div class="compose-av" id="composeAv"></div>
+            <div class="compose-right">
+              <textarea class="compose-ta" id="composeText" rows="2" placeholder="Share a thought..."></textarea>
+              <div class="compose-divider"></div>
+              <div class="compose-acts">
+                <button class="compose-icon" onclick="showToast('📷 Photo')">🖼</button>
+                <button class="compose-icon" onclick="showToast('🔗 Link')">🔗</button>
+                <button class="compose-icon" onclick="showToast('😊 Emoji')">😊</button>
+                <button class="compose-send" onclick="publishPost()">Publish</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── POST FEED ── -->
+          <div id="postsContainer"></div>
+
+        </div><!-- /col-left -->
+
+        <!-- ══════════════ RIGHT WIDGETS COLUMN ══════════════ -->
+        <div class="col-right">
+
+          <!-- ── ACHIEVEMENTS ── -->
+          <div class="card">
+            <div class="sec-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="8" r="7" />
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+              </svg>
+              ACHIEVEMENTS
+            </div>
+            <!-- Empty state -->
+            <div class="achievement-empty" id="achieveEmpty">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polygon points="12,2 14.4,9.2 22,9.2 16,13.8 18.4,21 12,16.4 5.6,21 8,13.8 2,9.2 9.6,9.2" />
+              </svg>
+              <div>Your achievements<br>will appear here</div>
+            </div>
+            <!-- Badges grid (revealed on club join) -->
+            <div class="badges-grid" id="badgesGrid" style="display:none;">
+              <div class="badge-chip">
+                <div class="badge-tip">🔥 7-Day Streak!</div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C8 8 6 11 6 14a6 6 0 0 0 12 0c0-3-2-6-6-12z" fill="#F5793A" opacity=".9" />
+                  <path d="M12 8c-2 3-3 5-3 7a3 3 0 0 0 6 0c0-2-1-4-3-7z" fill="#FFD166" />
+                </svg>
+                <span>7-Day</span>
+              </div>
+              <div class="badge-chip">
+                <div class="badge-tip">🇬🇧 English B2</div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="5" width="18" height="14" rx="3" fill="#4267B2" opacity=".85" /><text x="12" y="15"
+                    text-anchor="middle" font-size="7" font-weight="bold" fill="#fff"
+                    font-family="DM Sans,sans-serif">B2</text>
+                </svg>
+                <span>Eng B2</span>
+              </div>
+              <div class="badge-chip">
+                <div class="badge-tip">🌟 Stargazer</div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <polygon points="12,2 14.4,9.2 22,9.2 16,13.8 18.4,21 12,16.4 5.6,21 8,13.8 2,9.2 9.6,9.2"
+                    fill="#F5B942" />
+                </svg>
+                <span>Stargazer</span>
+              </div>
+              <div class="badge-chip">
+                <div class="badge-tip">📚 Bookworm</div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <rect x="4" y="3" width="11" height="17" rx="2" fill="#00A896" />
+                  <rect x="8" y="3" width="12" height="17" rx="2" fill="#008F7E" opacity=".8" />
+                </svg>
+                <span>Bookworm</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── MY CLUBS — динамически из Firestore ── -->
+          <div class="card">
+            <div class="sec-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              MY CLUBS
+            </div>
+            <!-- Динамический список клубов — заполняется из Firebase -->
+            <div id="clubsListContainer">
+              <div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0;">
+                <div
+                  style="width:20px;height:20px;border:2px solid var(--teal-light);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;">
+                </div>
+                Загружаем клубы...
+              </div>
+            </div>
+          </div>
+
+          <!-- ── ACTIVITY ── -->
+          <div class="card">
+            <div class="sec-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+              ACTIVITY
+            </div>
+            <div class="activity-row">
+              <div class="activity-label">
+                <span class="status-dot-green"></span> Online now
+              </div>
+              <span class="activity-count">124</span>
+            </div>
+          </div>
+
+          <!-- ── DEEP FOCUS TIMER (Pomodoro) ── -->
+          <div class="card pomo-card">
+            <div class="sec-title" style="justify-content:center; margin-bottom:4px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              DEEP FOCUS TIMER
+            </div>
+            <!-- Pomodoro ring SVG -->
+            <div class="pomo-ring-wrap">
+              <svg class="pomo-svg" width="120" height="120" viewBox="0 0 120 120">
+                <circle class="pomo-ring-bg" cx="60" cy="60" r="50" />
+                <circle class="pomo-ring-fill" cx="60" cy="60" r="50" id="pomoRing" stroke-dasharray="314.2"
+                  stroke-dashoffset="0" />
+              </svg>
+              <div class="pomo-center">
+                <div class="pomo-time" id="pomoTxt">25:00</div>
+                <div class="pomo-mode-lbl" id="pomoMode">FOCUS</div>
+              </div>
+            </div>
+            <!-- Controls -->
+            <div class="pomo-controls">
+              <button class="pomo-btn" onclick="resetPomo()" title="Reset">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 .49-3.1" />
+                </svg>
+              </button>
+              <button class="pomo-btn play" onclick="togglePomo()">
+                <svg id="pomoIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5 3 19 12 5 21 5 3" />
+                </svg>
+              </button>
+              <button class="pomo-btn" onclick="skipPomo()" title="Skip">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="5 4 15 12 5 20" />
+                  <line x1="19" y1="5" x2="19" y2="19" />
+                </svg>
+              </button>
+            </div>
+            <!-- Mode tabs -->
+            <div class="pomo-tabs">
+              <button class="pomo-tab on" id="pt-focus" onclick="setPomo('focus',25)">Focus</button>
+              <button class="pomo-tab" id="pt-short" onclick="setPomo('short',5)">Short</button>
+              <button class="pomo-tab" id="pt-long" onclick="setPomo('long',15)">Long</button>
+            </div>
+            <div class="pomo-session" id="pomoSession">Session 1 · Stay locked in 🎯</div>
+          </div>
+
+          <!-- ── FRIENDS + SUGGESTED ── -->
+          <!-- MY FRIENDS block -->
+          <div class="card">
+            <div class="sec-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              МОИ ДРУЗЬЯ
+            </div>
+            <!-- Динамический список друзей из Firebase -->
+            <div id="friendsListContainer">
+              <div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0;">
+                <div
+                  style="width:20px;height:20px;border:2px solid var(--teal-light);border-top-color:var(--teal);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 8px;">
+                </div>
+                Загружаем...
+              </div>
+            </div>
+          </div>
+
+          <!-- SUGGESTED USERS (только для своего профиля) -->
+          <div class="card" id="suggestedUsersCard">
+            <div class="sec-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <line x1="19" y1="8" x2="19" y2="14" />
+                <line x1="22" y1="11" x2="16" y2="11" />
+              </svg>
+              НАЙТИ ДРУЗЕЙ
+            </div>
+            <div id="suggestedUsersContainer">
+              <div style="color:var(--muted);font-size:13px;text-align:center;padding:8px 0;">Ищем пользователей...
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /col-right -->
+      </div><!-- /page-grid -->
+    </div><!-- /main-scroll -->
+  </div><!-- /app-body -->
+
+  <!-- Toast notification -->
+  <div class="toast" id="toastEl"></div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════════
+     PROFILE.HTML — ПОЛНЫЙ КОНТРОЛЛЕР
+     ✅ Клубы из Firebase (как в Chat.html)
+     ✅ Фото через Storage (сохраняется постоянно)
+     ✅ Друзья — реальные пользователи из БД
+     ✅ Owner / Visitor режимы
+  ═══════════════════════════════════════════════════════════════ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import {
+      getFirestore, doc, getDoc, updateDoc, setDoc, deleteDoc,
+      collection, addDoc, query, where, orderBy, getDocs,
+      onSnapshot, serverTimestamp, arrayUnion, arrayRemove, increment
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL }
+      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+    /* ══════════════════════════════════════
+       FIREBASE INIT
+    ══════════════════════════════════════ */
+    const firebaseConfig = {
+      apiKey: "AIzaSyBQ9UYY6uh3CgXzytNwt_r2LCwaXval9T8",
+      authDomain: "tutorapp-95f48.firebaseapp.com",
+      projectId: "tutorapp-95f48",
+      storageBucket: "tutorapp-95f48.firebasestorage.app",
+      messagingSenderId: "559214827748",
+      appId: "1:559214827748:web:c77d90b72d607f6df1b4f1"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+
+    /* ══════════════════════════════════════
+       ГЛОБАЛЬНОЕ СОСТОЯНИЕ
+    ══════════════════════════════════════ */
+    let currentUid = null;      // uid залогиненного пользователя
+    let profileUid = null;      // uid просматриваемого профиля
+    let isOwnProfile = false;   // свой ли профиль
+    let currentUserData = null; // данные профиля из Firestore
+    let currentClubs = [];      // массив id клубов пользователя
+    let allClubs = [];          // все клубы из Firestore
+    let friendsList = [];       // массив uid друзей профиля
+    let unsubFriends = null;    // listener на друзей
+
+    /* ══════════════════════════════════════
+       ТОЧКА ВХОДА
+    ══════════════════════════════════════ */
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        setTimeout(() => { window.location.href = './auth.html'; }, 600);
+        return;
+      }
+      currentUid = user.uid;
+
+      const params = new URLSearchParams(window.location.search);
+      const uidParam = params.get('uid');
+      profileUid = uidParam || currentUid;
+      isOwnProfile = (profileUid === currentUid);
+
+      // Загружаем все клубы параллельно с профилем
+      await Promise.all([loadProfile(), loadAllClubs()]);
+    });
+
+    /* ══════════════════════════════════════
+       ЗАГРУЗКА ВСЕХ КЛУБОВ ИЗ FIRESTORE
+       (как в Chat.html)
+    ══════════════════════════════════════ */
+    async function loadAllClubs() {
+      try {
+        const snap = await getDocs(collection(db, 'clubs'));
+        if (!snap.empty) {
+          allClubs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        } else {
+          // Seed-клубы если база пустая
+          const seeds = [
+            { id: 'club_english', name: 'English Speakers', emoji: '📚', members: 1240 },
+            { id: 'club_astronomy', name: 'Astronomy Hub', emoji: '🔭', members: 860 },
+            { id: 'club_cinema', name: 'Cinema Enthusiasts', emoji: '🎬', members: 2100 },
+            { id: 'club_math', name: 'Math Champions', emoji: '🧮', members: 540 },
+            { id: 'club_code', name: 'Code & Coffee', emoji: '☕', members: 320 }
+          ];
+          for (const s of seeds) {
+            await setDoc(doc(db, 'clubs', s.id), { name: s.name, emoji: s.emoji, members: s.members }, { merge: true });
+          }
+          allClubs = seeds;
+        }
+      } catch (e) {
+        console.error('loadAllClubs:', e);
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ЗАГРУЗКА ПРОФИЛЯ
+    ══════════════════════════════════════ */
+    async function loadProfile() {
+      const overlay = document.getElementById('auth-loading-overlay');
+      try {
+        const snap = await getDoc(doc(db, 'users', profileUid));
+        if (!snap.exists()) {
+          _showError('Профиль не найден 😕');
+          return;
+        }
+
+        const data = snap.data();
+        currentUserData = data;
+        currentClubs = Array.isArray(data.clubs) ? data.clubs : [];
+        friendsList = Array.isArray(data.friends) ? data.friends : [];
+
+        // Заполняем все блоки UI
+        _fillBaseInfo(data);
+        _fillStats(data);
+        _fillAvatar(data);
+        _fillBanner(data);
+
+        // Клубы — ждём если allClubs ещё не загружены
+        _fillClubsSection();
+
+        // Блок репетитора
+        _applyRoleBlock(data);
+
+        // Кнопки Owner/Visitor
+        _applyActionButtons(data);
+
+        // Посты
+        _loadPosts(profileUid, data.nick || 'user', data.photoUrl || '');
+
+        // Обновляем хедер аватар (только для своего профиля)
+        if (isOwnProfile) {
+          _updateHeaderAvatar(data);
+          // Подписываемся на live-обновления своих данных
+          _subscribeOwnProfile();
+        } else {
+          // Подписка на live-обновления статуса дружбы (для чужого профиля)
+          _subscribeVisitorFriendStatus();
+        }
+
+        // Загружаем блок друзей
+        await _loadFriendsBlock();
+
+      } catch (err) {
+        console.error('loadProfile error:', err);
+        _showError('Ошибка загрузки профиля');
+      } finally {
+        if (overlay) overlay.style.display = 'none';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       LIVE-ПОДПИСКА НА СВОЙ ПРОФИЛЬ
+       (обновляет счётчики в реальном времени)
+    ══════════════════════════════════════ */
+    function _subscribeOwnProfile() {
+      onSnapshot(doc(db, 'users', currentUid), (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
+        currentUserData = data;
+        currentClubs = Array.isArray(data.clubs) ? data.clubs : [];
+        friendsList = Array.isArray(data.friends) ? data.friends : [];
+        _fillStats(data);
+        _fillClubsSection(); // обновляем статус кнопок join/joined
+      });
+    }
+
+    /* ══════════════════════════════════════
+       LIVE-ПОДПИСКА НА СТАТУС ДРУЖБЫ
+       (для чужого профиля — обновляет кнопку)
+    ══════════════════════════════════════ */
+    function _subscribeVisitorFriendStatus() {
+      onSnapshot(doc(db, 'users', currentUid), (snap) => {
+        if (!snap.exists()) return;
+        const myFriends = Array.isArray(snap.data().friends) ? snap.data().friends : [];
+        const btn = document.getElementById('addFriendBtn');
+        if (btn) _setFriendBtnState(btn, myFriends.includes(profileUid));
+      });
+    }
+
+    /* ══════════════════════════════════════
+       ЗАПОЛНЕНИЕ БАЗОВОЙ ИНФОРМАЦИИ
+    ══════════════════════════════════════ */
+    function _fillBaseInfo(data) {
+      const nick = data.nick || 'user';
+      const displayName = data.fullName || nick;
+      const bio = data.bio || data.description || '';
+
+      const nameEl = document.getElementById('profileName');
+      if (nameEl) nameEl.textContent = displayName;
+
+      const handleEl = document.getElementById('handleText');
+      if (handleEl) handleEl.textContent = '@' + nick;
+
+      const bioEl = document.getElementById('profileBio');
+      if (bioEl) {
+        if (bio) {
+          bioEl.textContent = bio;
+          bioEl.className = 'has-bio';
+        } else {
+          bioEl.textContent = 'Расскажи о себе...';
+          bioEl.className = '';
+        }
+      }
+
+      document.title = displayName + ' — TutorApp';
+    }
+
+    /* ══════════════════════════════════════
+       СТАТИСТИКА
+    ══════════════════════════════════════ */
+    function _fillStats(data) {
+      const set = (id, val) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val ?? 0;
+      };
+      set('statPosts', data.postsCount || 0);
+      set('statFriends', data.friendsCount || (Array.isArray(data.friends) ? data.friends.length : 0));
+      set('statClubs', data.clubsCount || currentClubs.length);
+      set('statStreak', data.streakDays || 0);
+    }
+
+    /* ══════════════════════════════════════
+       АВАТАР — загружаем из photoUrl
+    ══════════════════════════════════════ */
+    function _fillAvatar(data) {
+      if (data.photoUrl) {
+        _applyAvatarUrl(data.photoUrl);
+      } else {
+        const placeholder = document.getElementById('avatarPlaceholder');
+        const name = data.fullName || data.nick || '?';
+        if (placeholder) {
+          placeholder.innerHTML = `<span style="font-size:28px;font-weight:700;color:#fff;">${name[0].toUpperCase()}</span>`;
+        }
+      }
+
+      if (isOwnProfile) {
+        const composeAv = document.getElementById('composeAv');
+        if (composeAv) {
+          if (data.photoUrl) {
+            composeAv.style.backgroundImage = `url(${data.photoUrl})`;
+            composeAv.style.backgroundSize = 'cover';
+            composeAv.textContent = '';
+          } else {
+            const name = data.fullName || data.nick || '?';
+            composeAv.textContent = name[0].toUpperCase();
+            Object.assign(composeAv.style, {
+              display: 'flex', alignItems: 'center',
+              justifyContent: 'center', color: '#fff', fontWeight: '700'
+            });
+          }
+        }
+      }
+    }
+
+    function _applyAvatarUrl(url) {
+      const img = document.getElementById('avatarImg');
+      const placeholder = document.getElementById('avatarPlaceholder');
+      const avLive = document.getElementById('avLive');
+      const composeAv = document.getElementById('composeAv');
+
+      if (img) { img.src = url; img.style.display = 'block'; }
+      if (placeholder) placeholder.style.display = 'none';
+      if (avLive) avLive.style.display = 'block';
+      if (composeAv && isOwnProfile) {
+        composeAv.style.backgroundImage = `url(${url})`;
+        composeAv.style.backgroundSize = 'cover';
+        composeAv.textContent = '';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       БАННЕР
+    ══════════════════════════════════════ */
+    function _fillBanner(data) {
+      if (data.bannerUrl) {
+        const bImg = document.getElementById('bannerImg');
+        if (bImg) { bImg.src = data.bannerUrl; bImg.style.display = 'block'; }
+        const bPh = document.getElementById('bannerPlaceholder');
+        if (bPh) bPh.style.display = 'none';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       КЛУБЫ — берём из Firestore коллекции
+       Показываем все клубы, помечаем joined
+    ══════════════════════════════════════ */
+    function _fillClubsSection() {
+      const container = document.getElementById('clubsListContainer');
+      if (!container) return;
+
+      if (!allClubs.length) {
+        container.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0;">Клубы загружаются...</div>`;
+        // Повторим через 1 сек
+        setTimeout(_fillClubsSection, 1000);
+        return;
+      }
+
+      // Клубы пользователя — берём из currentClubs (массив id)
+      container.innerHTML = '';
+      const clubIconMap = {
+        '📚': '#EBF3FF', '🔭': '#1A1A2E', '🎬': '#2D1B1B',
+        '🧮': '#1B2D1B', '☕': '#2D1E12', '🔬': '#1A2D2A',
+        '🇬🇧': '#EBF3FF', '🌍': '#E6F4EA'
+      };
+      const clubStrokeMap = {
+        '📚': '#4267B2', '🔭': '#9AA5FF', '🎬': '#E9967A',
+        '🧮': '#38D68A', '☕': '#D4A017', '🔬': '#00A896',
+        '🇬🇧': '#4267B2', '🌍': '#38D68A'
+      };
+
+      // Фильтруем: на чужом профиле — только вступившие клубы
+      const clubsToShow = isOwnProfile
+        ? allClubs
+        : allClubs.filter(c => currentClubs.includes(c.id));
+
+      if (!clubsToShow.length && !isOwnProfile) {
+        container.innerHTML = `<div style="color:var(--muted);font-size:13px;padding:8px 0;">Нет клубов</div>`;
+        return;
+      }
+
+      const showCount = isOwnProfile ? Math.min(clubsToShow.length, 5) : Math.min(clubsToShow.length, 5);
+      const visibleClubs = clubsToShow.slice(0, showCount);
+
+      visibleClubs.forEach(club => {
+        const emoji = club.emoji || '📚';
+        const bg = clubIconMap[emoji] || '#EBF3FF';
+        const stroke = clubStrokeMap[emoji] || '#4267B2';
+        const isJoined = currentClubs.includes(club.id);
+        const memberCount = club.members
+          ? (typeof club.members === 'number' ? club.members : (Array.isArray(club.members) ? club.members.length : 0))
+          : 0;
+
+        const item = document.createElement('div');
+        item.className = 'club-item';
+        item.innerHTML = `
+          <div class="club-icon" style="background:${bg}; font-size:17px; display:flex; align-items:center; justify-content:center;">
+            ${emoji}
+          </div>
+          <div class="club-info">
+            <div class="club-name">${club.name || 'Клуб'}</div>
+            <div class="club-members">${memberCount ? memberCount.toLocaleString('ru') + ' участников' : ''}</div>
+          </div>
+          ${isOwnProfile
+            ? `<button class="club-join-btn${isJoined ? ' joined' : ''}" 
+                 data-club-id="${club.id}" data-club-name="${club.name || ''}"
+                 onclick="toggleJoin(this,'${club.id}','${(club.name || '').replace(/'/g, "\\'")}')">
+                 ${isJoined ? '✓ Joined' : 'Join →'}
+               </button>`
+            : (isJoined ? `<span style="font-size:11px;color:var(--teal);font-weight:600;">✓ Joined</span>` : '')
+          }`;
+        container.appendChild(item);
+      });
+
+      // Кнопка "Ещё клубы"
+      const remaining = clubsToShow.length - showCount;
+      if (remaining > 0 && isOwnProfile) {
+        const moreBtn = document.createElement('button');
+        moreBtn.className = 'clubs-more-btn';
+        moreBtn.textContent = `+ Ещё ${remaining} клубов`;
+        moreBtn.onclick = () => {
+          // Показываем остальные
+          const extra = clubsToShow.slice(showCount);
+          moreBtn.remove();
+          extra.forEach(club => {
+            const emoji = club.emoji || '📚';
+            const bg = clubIconMap[emoji] || '#EBF3FF';
+            const isJoined = currentClubs.includes(club.id);
+            const memberCount = club.members
+              ? (typeof club.members === 'number' ? club.members : (Array.isArray(club.members) ? club.members.length : 0))
+              : 0;
+            const item = document.createElement('div');
+            item.className = 'club-item';
+            item.innerHTML = `
+              <div class="club-icon" style="background:${bg}; font-size:17px; display:flex; align-items:center; justify-content:center;">${emoji}</div>
+              <div class="club-info">
+                <div class="club-name">${club.name || 'Клуб'}</div>
+                <div class="club-members">${memberCount ? memberCount.toLocaleString('ru') + ' участников' : ''}</div>
+              </div>
+              <button class="club-join-btn${isJoined ? ' joined' : ''}" 
+                data-club-id="${club.id}"
+                onclick="toggleJoin(this,'${club.id}','${(club.name || '').replace(/'/g, "\\'")}')">
+                ${isJoined ? '✓ Joined' : 'Join →'}
+              </button>`;
+            container.appendChild(item);
+          });
+        };
+        container.appendChild(moreBtn);
+      }
+
+      // Обновляем Achievements
+      _updateAchievements();
+    }
+
+    function _updateAchievements() {
+      const achieveEmpty = document.getElementById('achieveEmpty');
+      const badgesGrid = document.getElementById('badgesGrid');
+      if (currentClubs.length > 0) {
+        if (achieveEmpty) achieveEmpty.style.display = 'none';
+        if (badgesGrid) badgesGrid.style.display = 'grid';
+      } else {
+        if (achieveEmpty) achieveEmpty.style.display = '';
+        if (badgesGrid) badgesGrid.style.display = 'none';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       БЛОК РЕПЕТИТОРА
+    ══════════════════════════════════════ */
+    function _applyRoleBlock(data) {
+      const tutorBlock = document.getElementById('tutorBlock');
+      const roleBadge = document.getElementById('roleBadge');
+
+      if (data.role === 'tutor') {
+        if (tutorBlock) {
+          tutorBlock.style.display = '';
+          const subjectsEl = document.getElementById('tutorSubjects');
+          if (subjectsEl) {
+            const subjects = data.tutorSpecific?.subjects || data.subjects || [];
+            subjectsEl.textContent = subjects.length ? subjects.join(' · ') : 'Не указаны';
+          }
+          const priceEl = document.getElementById('tutorPrice');
+          if (priceEl) {
+            const price = data.tutorSpecific?.price ?? data.ratePerHour ?? 0;
+            priceEl.textContent = price > 0 ? `₸${price} / час` : 'По договорённости';
+          }
+        } else {
+          _injectTutorBlock(data);
+        }
+        if (roleBadge) { roleBadge.textContent = '👨‍🏫 Репетитор'; roleBadge.style.display = 'inline-flex'; }
+      } else {
+        if (tutorBlock) tutorBlock.style.display = 'none';
+        if (roleBadge) { roleBadge.textContent = '🎓 Ученик'; roleBadge.style.display = 'inline-flex'; }
+      }
+    }
+
+    function _injectTutorBlock(data) {
+      const subjects = data.tutorSpecific?.subjects || data.subjects || [];
+      const price = data.tutorSpecific?.price ?? data.ratePerHour ?? 0;
+      const block = document.createElement('div');
+      block.id = 'tutorBlock';
+      block.className = 'card';
+      block.style.marginBottom = '14px';
+      block.innerHTML = `
+        <div class="sec-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+          </svg>РЕПЕТИТОР
+        </div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:4px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;">Предметы</div>
+            <div id="tutorSubjects" style="font-size:14px;font-weight:600;color:var(--text);">
+              ${subjects.length ? subjects.map(s => `<span style="background:var(--teal-light);color:var(--teal-dark);border-radius:50px;padding:3px 10px;margin:2px;display:inline-block;font-size:12.5px;">${s}</span>`).join('') : 'Не указаны'}
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-bottom:6px;">Стоимость</div>
+            <div id="tutorPrice" style="font-size:20px;font-weight:700;color:var(--teal-dark);">
+              ${price > 0 ? `₸${price} / час` : 'По договорённости'}
+            </div>
+          </div>
+        </div>`;
+      const composedCard = document.querySelector('.compose-card');
+      if (composedCard) composedCard.parentNode.insertBefore(block, composedCard);
+      else {
+        const postsContainer = document.getElementById('postsContainer');
+        if (postsContainer) postsContainer.parentNode.insertBefore(block, postsContainer);
+      }
+    }
+
+    /* ══════════════════════════════════════
+       КНОПКИ OWNER / VISITOR
+    ══════════════════════════════════════ */
+    function _applyActionButtons(data) {
+      const editBtn = document.getElementById('editProfileBtn');
+      const editActions = document.getElementById('editActions');
+      const avEditBadge = document.querySelector('.av-edit-badge');
+      const bannerEditOverlay = document.querySelector('.banner-edit-overlay');
+      const bannerWrap = document.getElementById('bannerWrap');
+      const avOuter = document.querySelector('.av-outer');
+      const composeCard = document.querySelector('.compose-card');
+      const profileBtns = document.querySelector('.profile-btns');
+
+      if (isOwnProfile) {
+        // ── МОЙ ПРОФИЛЬ ─────────────────────────────────────────
+        if (editBtn) editBtn.style.display = '';
+        if (composeCard) composeCard.style.display = '';
+        if (bannerWrap) bannerWrap.style.cursor = 'pointer';
+        if (avOuter) avOuter.style.cursor = 'pointer';
+        if (avEditBadge) avEditBadge.style.display = '';
+        if (bannerEditOverlay) bannerEditOverlay.style.display = '';
+
+        // Кнопка Logout
+        if (profileBtns && !document.getElementById('logoutBtn')) {
+          const logoutBtn = document.createElement('button');
+          logoutBtn.id = 'logoutBtn';
+          logoutBtn.style.cssText = `padding:8px 14px;border-radius:var(--r-sm);background:transparent;
+            color:var(--red);border:1.5px solid var(--red);font-family:'DM Sans',sans-serif;
+            font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;
+            transition:background .2s,color .2s;`;
+          logoutBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Выйти`;
+          logoutBtn.addEventListener('mouseenter', () => { logoutBtn.style.background = 'rgba(224,90,122,0.08)'; });
+          logoutBtn.addEventListener('mouseleave', () => { logoutBtn.style.background = 'transparent'; });
+          logoutBtn.onclick = () => window.logout();
+          profileBtns.appendChild(logoutBtn);
+        }
+
+      } else {
+        // ── ЧУЖОЙ ПРОФИЛЬ ───────────────────────────────────────
+        if (editBtn) editBtn.style.display = 'none';
+        if (editActions) editActions.style.display = 'none';
+        if (avEditBadge) avEditBadge.style.display = 'none';
+        if (bannerEditOverlay) bannerEditOverlay.style.display = 'none';
+        if (bannerWrap) { bannerWrap.style.cursor = 'default'; bannerWrap.onclick = null; }
+        if (avOuter) { avOuter.style.cursor = 'default'; avOuter.onclick = null; }
+        if (composeCard) composeCard.style.display = 'none';
+
+        // Скрываем блок "Найти друзей" на чужом профиле
+        const suggestedCard = document.getElementById('suggestedUsersCard');
+        if (suggestedCard) suggestedCard.style.display = 'none';
+
+        // Показываем баннер "Вы смотрите чужой профиль"
+        const vb = document.getElementById('visitorBanner');
+        if (vb) {
+          vb.style.display = 'flex';
+          const name = data.fullName || data.nick || 'пользователь';
+          const vbText = document.getElementById('visitorBannerText');
+          if (vbText) vbText.textContent = `👤 Профиль: ${name}`;
+          // Сдвигаем header вниз на высоту баннера
+          const hdr = document.querySelector('header');
+          const subnav = document.querySelector('.subnav');
+          const appBody = document.querySelector('.app-body');
+          if (hdr) hdr.style.top = '37px';
+          if (subnav) subnav.style.top = 'calc(37px + var(--header-h))';
+          if (appBody) appBody.style.top = 'calc(37px + var(--header-h) + var(--subnav-h))';
+        }
+
+        if (profileBtns) {
+          // Кнопка "Добавить в друзья"
+          if (!document.getElementById('addFriendBtn')) {
+            const addBtn = document.createElement('button');
+            addBtn.id = 'addFriendBtn';
+            addBtn.dataset.state = 'not-friends';
+
+            addBtn.style.cssText = `padding:8px 16px;border-radius:var(--r-sm);
+              background:var(--teal);color:#fff;border:none;
+              font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+              cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .2s,border-color .2s,color .2s;`;
+            addBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Добавить в друзья`;
+            addBtn.onclick = () => _handleAddFriend(addBtn, data);
+            profileBtns.appendChild(addBtn);
+
+            // Проверяем реальный статус дружбы асинхронно
+            _checkFriendshipStatus(addBtn);
+          }
+
+          // Кнопка "Написать"
+          if (!document.getElementById('msgBtn')) {
+            const msgBtn = document.createElement('button');
+            msgBtn.id = 'msgBtn';
+            msgBtn.style.cssText = `padding:8px 14px;border-radius:var(--r-sm);
+              background:var(--white);color:var(--text-mid);border:1.5px solid var(--border);
+              font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+              cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .2s,color .2s;`;
+            msgBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Написать`;
+            msgBtn.addEventListener('mouseenter', () => { msgBtn.style.borderColor = 'var(--teal)'; msgBtn.style.color = 'var(--teal-dark)'; });
+            msgBtn.addEventListener('mouseleave', () => { msgBtn.style.borderColor = 'var(--border)'; msgBtn.style.color = 'var(--text-mid)'; });
+            msgBtn.onclick = () => { window.location.href = `Chat.html?uid=${profileUid}`; };
+            profileBtns.appendChild(msgBtn);
+          }
+        }
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ПРОВЕРКА СТАТУСА ДРУЖБЫ
+    ══════════════════════════════════════ */
+    async function _checkFriendshipStatus(btn) {
+      if (!currentUid) return;
+      try {
+        const meSnap = await getDoc(doc(db, 'users', currentUid));
+        if (!meSnap.exists()) return;
+        const myData = meSnap.data();
+        const myFriends = Array.isArray(myData.friends) ? myData.friends : [];
+        _setFriendBtnState(btn, myFriends.includes(profileUid));
+      } catch (e) { console.error('checkFriendship:', e); }
+    }
+
+    /* ══════════════════════════════════════
+       УСТАНОВКА СОСТОЯНИЯ КНОПКИ ДРУЖБЫ
+    ══════════════════════════════════════ */
+    function _setFriendBtnState(btn, isFriend) {
+      btn.disabled = false;
+      if (isFriend) {
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>Вы друзья · Отписаться`;
+        btn.style.background = 'var(--teal-light)';
+        btn.style.color = 'var(--teal-dark)';
+        btn.style.border = '1.5px solid var(--teal-mid)';
+        btn.dataset.state = 'friends';
+      } else {
+        btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Добавить в друзья`;
+        btn.style.background = 'var(--teal)';
+        btn.style.color = '#fff';
+        btn.style.border = 'none';
+        btn.dataset.state = 'not-friends';
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ДОБАВЛЕНИЕ / УДАЛЕНИЕ ИЗ ДРУЗЕЙ
+    ══════════════════════════════════════ */
+    async function _handleAddFriend(btn, targetData) {
+      if (!currentUid) { showToast('⚠️ Нужно войти в аккаунт'); return; }
+
+      const isFriend = btn.dataset.state === 'friends';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      try {
+        const meRef = doc(db, 'users', currentUid);
+        const theirRef = doc(db, 'users', profileUid);
+
+        if (isFriend) {
+          // ── УДАЛИТЬ ИЗ ДРУЗЕЙ ─────────────────────────────────────
+          await Promise.all([
+            updateDoc(meRef, { friends: arrayRemove(profileUid), friendsCount: increment(-1) }),
+            updateDoc(theirRef, { friends: arrayRemove(currentUid), friendsCount: increment(-1) })
+          ]);
+
+          _setFriendBtnState(btn, false);
+          btn.style.opacity = '1';
+
+          // Обновляем счётчик
+          const sf = document.getElementById('statFriends');
+          if (sf) sf.textContent = Math.max(0, parseInt(sf.textContent || '0') - 1);
+
+          showToast('👋 Удалён из друзей');
+          await _loadFriendsBlock();
+
+        } else {
+          // ── ДОБАВИТЬ В ДРУЗЬЯ ─────────────────────────────────────
+          const meSnap = await getDoc(meRef);
+          if (!meSnap.exists()) throw new Error('my doc not found');
+          const myData = meSnap.data();
+          const myFriends = Array.isArray(myData.friends) ? myData.friends : [];
+
+          if (myFriends.includes(profileUid)) {
+            _setFriendBtnState(btn, true);
+            btn.style.opacity = '1';
+            showToast('✅ Вы уже друзья!');
+            return;
+          }
+
+          await Promise.all([
+            updateDoc(meRef, { friends: arrayUnion(profileUid), friendsCount: increment(1) }),
+            updateDoc(theirRef, { friends: arrayUnion(currentUid), friendsCount: increment(1) })
+          ]);
+
+          // Уведомление
+          await addDoc(collection(db, 'notifications'), {
+            toUid: profileUid,
+            fromUid: currentUid,
+            fromName: myData.fullName || myData.nick || 'Пользователь',
+            text: 'добавил(а) вас в друзья',
+            chatType: 'friend_request',
+            chatId: currentUid,
+            read: false,
+            createdAt: serverTimestamp()
+          });
+
+          _setFriendBtnState(btn, true);
+          btn.style.opacity = '1';
+
+          const sf = document.getElementById('statFriends');
+          if (sf) sf.textContent = parseInt(sf.textContent || '0') + 1;
+
+          showToast('✅ Вы теперь друзья!');
+          await _loadFriendsBlock();
+        }
+
+      } catch (e) {
+        console.error('addFriend error:', e);
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        showToast('⚠️ Ошибка. Попробуй ещё раз');
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ЗАГРУЗКА БЛОКА ДРУЗЕЙ
+       Реальные пользователи из Firestore
+    ══════════════════════════════════════ */
+    async function _loadFriendsBlock() {
+      const container = document.getElementById('friendsListContainer');
+      if (!container) return;
+
+      if (!friendsList.length) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:16px 0;">
+            <div style="font-size:28px;margin-bottom:8px;">👥</div>
+            <div style="font-size:13px;color:var(--muted);">${isOwnProfile ? 'У тебя пока нет друзей.<br>Найди их в профилях!' : 'Друзья не найдены'}</div>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = `<div class="friends-loading" style="color:var(--muted);font-size:13px;text-align:center;padding:10px 0;">Загружаем...</div>`;
+
+      try {
+        const friendsToLoad = friendsList.slice(0, 6);
+        const friendDocs = await Promise.all(
+          friendsToLoad.map(uid => getDoc(doc(db, 'users', uid)))
+        );
+
+        container.innerHTML = '';
+        friendDocs.forEach((fSnap, i) => {
+          if (!fSnap.exists()) return;
+          const fd = fSnap.data();
+          const uid = friendsToLoad[i];
+          const name = fd.fullName || fd.nick || 'Пользователь';
+          const initLetter = name[0].toUpperCase();
+          const COLORS = ['#00A896', '#5BBDB5', '#007F72', '#38D68A', '#4A90D9', '#9B59B6', '#E67E22', '#E05A7A'];
+          const strColor = str => { let h = 0; for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h); return COLORS[Math.abs(h) % COLORS.length]; };
+
+          const row = document.createElement('div');
+          row.className = 'sf-row';
+          row.style.cursor = 'pointer';
+          row.innerHTML = `
+            <div class="sf-av" style="cursor:pointer;" onclick="window.location.href='profile.html?uid=${uid}'">
+              ${fd.photoUrl
+              ? `<img src="${fd.photoUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+              : `<div class="sf-av-init" style="background:${strColor(name)};">${initLetter}</div>`
+            }
+              <div class="sf-dot"></div>
+            </div>
+            <div onclick="window.location.href='profile.html?uid=${uid}'" style="flex:1;cursor:pointer;">
+              <div class="sf-name">${name}</div>
+              <div class="sf-tag">@${fd.nick || 'user'}</div>
+            </div>
+            <button class="sf-follow" onclick="window.location.href='Chat.html?uid=${uid}'" title="Написать">💬</button>`;
+          container.appendChild(row);
+        });
+
+        // Если больше 6 друзей
+        if (friendsList.length > 6) {
+          const moreRow = document.createElement('div');
+          moreRow.style.cssText = 'text-align:center;margin-top:10px;';
+          moreRow.innerHTML = `<button onclick="loadAllFriends()" style="background:none;border:none;color:var(--teal);font-family:\'DM Sans\',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Показать всех (${friendsList.length}) →</button>`;
+          container.appendChild(moreRow);
+        }
+
+      } catch (e) {
+        console.error('loadFriends:', e);
+        container.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:10px 0;">Ошибка загрузки</div>`;
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ПОДБОР ДРУЗЕЙ (для своего профиля)
+       Берём реальных пользователей из users
+    ══════════════════════════════════════ */
+    async function _loadSuggestedUsers() {
+      const container = document.getElementById('suggestedUsersContainer');
+      if (!container || !isOwnProfile) return;
+
+      try {
+        const snap = await getDocs(collection(db, 'users'));
+        const myFriends = [...friendsList, currentUid]; // исключаем себя и уже-друзей
+
+        const suggestions = snap.docs
+          .map(d => ({ uid: d.id, ...d.data() }))
+          .filter(u => !myFriends.includes(u.uid))
+          .slice(0, 3);
+
+        if (!suggestions.length) {
+          container.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px 0;">Нет новых предложений</div>`;
+          return;
+        }
+
+        container.innerHTML = '';
+        const COLORS = ['#00A896', '#5BBDB5', '#007F72', '#38D68A', '#4A90D9', '#9B59B6', '#E67E22', '#E05A7A'];
+        const strColor = str => { let h = 0; for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h); return COLORS[Math.abs(h) % COLORS.length]; };
+
+        suggestions.forEach(u => {
+          const name = u.fullName || u.nick || 'Пользователь';
+          const initLetter = name[0].toUpperCase();
+
+          const row = document.createElement('div');
+          row.className = 'sf-row';
+          row.innerHTML = `
+            <div class="sf-av" onclick="window.location.href='profile.html?uid=${u.uid}'" style="cursor:pointer;">
+              ${u.photoUrl
+              ? `<img src="${u.photoUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
+              : `<div class="sf-av-init" style="background:${strColor(name)};">${initLetter}</div>`
+            }
+              <div class="sf-dot"></div>
+            </div>
+            <div onclick="window.location.href='profile.html?uid=${u.uid}'" style="flex:1;cursor:pointer;">
+              <div class="sf-name">${name}</div>
+              <div class="sf-tag">${u.subjects?.length ? u.subjects.slice(0, 2).join(', ') : ('@' + (u.nick || 'user'))}</div>
+            </div>
+            <button class="sf-follow" 
+              data-uid="${u.uid}"
+              onclick="quickAddFriend(this, '${u.uid}', '${name.replace(/'/g, "\\'")}')">+ Add</button>`;
+          container.appendChild(row);
+        });
+
+      } catch (e) {
+        console.error('loadSuggested:', e);
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ХЕДЕР АВАТАР
+    ══════════════════════════════════════ */
+    function _updateHeaderAvatar(data) {
+      const hAv = document.getElementById('headerAvatar');
+      if (!hAv) return;
+      if (data.photoUrl) {
+        hAv.style.backgroundImage = `url(${data.photoUrl})`;
+        hAv.style.backgroundSize = 'cover';
+        hAv.textContent = '';
+      } else {
+        const name = data.fullName || data.nick || '?';
+        hAv.textContent = name[0].toUpperCase();
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ЗАГРУЗКА ПОСТОВ
+    ══════════════════════════════════════ */
+    async function _loadPosts(uid, nick, photoUrl) {
+      try {
+        const q = query(
+          collection(db, 'posts'),
+          where('uid', '==', uid),
+          orderBy('createdAt', 'desc')
+        );
+        const snap = await getDocs(q);
+        snap.forEach(d => {
+          const p = d.data();
+          _renderPostCard({
+            id: d.id,
+            text: p.text || '',
+            authorName: p.authorName || nick,
+            photoUrl: p.photoUrl || photoUrl,
+            createdAt: p.createdAt?.toDate ? p.createdAt.toDate() : new Date(),
+            likes: p.likes || 0
+          }, false);
+        });
+        const sp = document.getElementById('statPosts');
+        if (sp && snap.size > 0) sp.textContent = snap.size;
+      } catch (e) {
+        console.log('Posts load:', e.message);
+      }
+    }
+
+    function _renderPostCard({ text, authorName, photoUrl, createdAt, likes = 0 }, prepend = true) {
+      const feed = document.getElementById('postsContainer');
+      if (!feed) return;
+      const timeStr = _timeAgo(createdAt);
+      const initLetter = (authorName || '?')[0].toUpperCase();
+      const avatarHTML = photoUrl
+        ? `<img src="${photoUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;" onerror="this.style.display='none'">`
+        : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#99D9D3,#00A896);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;">${initLetter}</div>`;
+
+      const card = document.createElement('div');
+      card.className = 'post-card';
+      const safeText = text.replace(/</g, '&lt;').replace(/\n/g, '<br>');
+      card.innerHTML = `
+        <div class="post-inner">
+          <div class="post-av-col">
+            <div class="post-av">${avatarHTML}</div>
+            <div class="post-line"></div>
+          </div>
+          <div class="post-body">
+            <div class="post-meta">
+              <span class="post-author">${authorName}</span>
+              <span class="post-time">${timeStr}</span>
+            </div>
+            <p class="post-text">${safeText}</p>
+            <div class="post-acts">
+              <button class="pact" onclick="postLike(this,'${likes}')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>${likes}
+              </button>
+              <button class="pact" onclick="showToast('💬 Комментарии скоро')">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>0
+              </button>
+            </div>
+          </div>
+        </div>`;
+      if (prepend) feed.insertBefore(card, feed.firstChild);
+      else feed.appendChild(card);
+    }
+
+    /* ══════════════════════════════════════
+       ВСПОМОГАТЕЛЬНЫЕ
+    ══════════════════════════════════════ */
+    function _timeAgo(date) {
+      const diff = Math.floor((Date.now() - date.getTime()) / 1000);
+      if (diff < 60) return 'только что';
+      if (diff < 3600) return Math.floor(diff / 60) + ' мин назад';
+      if (diff < 86400) return Math.floor(diff / 3600) + ' ч назад';
+      return Math.floor(diff / 86400) + ' дн назад';
+    }
+
+    function _showError(msg) {
+      const overlay = document.getElementById('auth-loading-overlay');
+      if (overlay) {
+        overlay.style.display = 'flex';
+        overlay.innerHTML = `
+          <div style="text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">😕</div>
+            <p style="font-size:15px;font-weight:600;color:var(--text);">${msg}</p>
+            <button onclick="history.back()" style="margin-top:16px;padding:8px 20px;
+              background:var(--teal);color:#fff;border:none;border-radius:8px;
+              font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">← Назад</button>
+          </div>`;
+      }
+    }
+
+    /* ══════════════════════════════════════
+       ГЛОБАЛЬНЫЕ ФУНКЦИИ (onclick=...)
+    ══════════════════════════════════════ */
+
+    /* LOGOUT */
+    window.logout = async function () {
+      try { await signOut(auth); window.location.href = './auth.html'; }
+      catch (err) { showToast('⚠️ Не удалось выйти'); }
+    };
+
+    /* EDIT PROFILE */
+    let _savedName = '', _savedBio = '';
+    window.enterEditMode = function () {
+      if (!isOwnProfile) return;
+      _savedName = document.getElementById('profileName').textContent;
+      _savedBio = document.getElementById('profileBio').textContent;
+      document.getElementById('editName').value = _savedName;
+      document.getElementById('editBio').value = (_savedBio === 'Расскажи о себе...') ? '' : _savedBio;
+      document.getElementById('profileName').style.display = 'none';
+      document.getElementById('profileBio').style.display = 'none';
+      document.getElementById('editName').style.display = 'block';
+      document.getElementById('editBio').style.display = 'block';
+      document.getElementById('editProfileBtn').style.display = 'none';
+      document.getElementById('editActions').style.display = 'flex';
+      document.getElementById('editName').focus();
+    };
+
+    window.saveProfile = async function () {
+      if (!isOwnProfile) return;
+      const name = document.getElementById('editName').value.trim();
+      const bio = document.getElementById('editBio').value.trim();
+      if (!name) { showToast('⚠️ Имя не может быть пустым'); return; }
+      document.getElementById('profileName').textContent = name;
+      const bioEl = document.getElementById('profileBio');
+      bioEl.textContent = bio || 'Расскажи о себе...';
+      bioEl.className = bio ? 'has-bio' : '';
+      exitEditMode();
+      showToast('⏳ Сохраняю...');
+      try {
+        await updateDoc(doc(db, 'users', currentUid), { fullName: name, bio: bio || '', description: bio || '' });
+        if (currentUserData) { currentUserData.fullName = name; currentUserData.bio = bio; }
+        showToast('✅ Изменения сохранены!');
+      } catch (err) { showToast('⚠️ Ошибка синхронизации'); }
+    };
+
+    window.cancelEdit = function () {
+      document.getElementById('editName').value = _savedName;
+      document.getElementById('editBio').value = _savedBio;
+      exitEditMode();
+    };
+
+    window.exitEditMode = function () {
+      document.getElementById('profileName').style.display = '';
+      document.getElementById('profileBio').style.display = '';
+      document.getElementById('editName').style.display = 'none';
+      document.getElementById('editBio').style.display = 'none';
+      document.getElementById('editProfileBtn').style.display = '';
+      document.getElementById('editActions').style.display = 'none';
+    };
+
+    /* PUBLISH POST */
+    window.publishPost = async function () {
+      if (!isOwnProfile) return;
+      const ta = document.getElementById('composeText');
+      const txt = ta.value.trim();
+      if (!txt) { showToast('✏️ Напиши что-нибудь!'); return; }
+      ta.value = '';
+      const data = currentUserData || {};
+      const nick = data.nick || 'user';
+      const displayName = data.fullName || nick;
+      const photoUrl = data.photoUrl || '';
+      const now = new Date();
+      _renderPostCard({ text: txt, authorName: displayName, photoUrl, createdAt: now, likes: 0 }, true);
+      const sp = document.getElementById('statPosts');
+      const newCount = parseInt(sp?.textContent || '0') + 1;
+      if (sp) sp.textContent = newCount;
+      showToast('✅ Пост опубликован!');
+      try {
+        await addDoc(collection(db, 'posts'), {
+          uid: currentUid, text: txt,
+          authorName: displayName, authorNick: nick, photoUrl,
+          likes: 0, createdAt: serverTimestamp()
+        });
+        await updateDoc(doc(db, 'users', currentUid), { postsCount: newCount });
+        if (currentUserData) currentUserData.postsCount = newCount;
+      } catch (err) { showToast('⚠️ Пост показан локально — проверь правила Firestore'); }
+    };
+
+    /* POST LIKE */
+    window.postLike = function (btn, base) {
+      const was = btn.classList.contains('liked');
+      btn.classList.toggle('liked');
+      btn.classList.add('popping');
+      setTimeout(() => btn.classList.remove('popping'), 400);
+      const last = btn.childNodes[btn.childNodes.length - 1];
+      last.textContent = ' ' + (parseInt(base) + (was ? 0 : 1));
+    };
+
+    /* CLUB JOIN / LEAVE */
+    window.toggleJoin = async function (btn, clubId, clubName) {
+      if (!isOwnProfile) return;
+      const joined = btn.classList.contains('joined');
+      const sc = document.getElementById('statClubs');
+      let newCount = parseInt(sc?.textContent || '0');
+
+      if (joined) {
+        btn.classList.remove('joined');
+        btn.textContent = 'Join →';
+        newCount = Math.max(0, newCount - 1);
+        currentClubs = currentClubs.filter(c => c !== clubId);
+        showToast(`👋 Вышел из "${clubName}"`);
+      } else {
+        btn.classList.add('joined');
+        btn.textContent = '✓ Joined';
+        newCount++;
+        if (!currentClubs.includes(clubId)) currentClubs.push(clubId);
+        showToast(`🎉 Вступил в "${clubName}"!`);
+      }
+      if (sc) sc.textContent = newCount;
+      _updateAchievements();
+
+      try {
+        await updateDoc(doc(db, 'users', currentUid), {
+          clubs: currentClubs,
+          clubsCount: newCount
+        });
+        if (currentUserData) { currentUserData.clubs = currentClubs; currentUserData.clubsCount = newCount; }
+      } catch (e) {
+        showToast('⚠️ Ошибка сохранения клуба');
+        console.error('toggleJoin:', e);
+      }
+    };
+
+    /* QUICK ADD FRIEND (из блока предложений) */
+    window.quickAddFriend = async function (btn, uid, name) {
+      btn.disabled = true;
+      btn.textContent = '...';
+      try {
+        const meRef = doc(db, 'users', currentUid);
+        const theirRef = doc(db, 'users', uid);
+        await Promise.all([
+          updateDoc(meRef, { friends: arrayUnion(uid), friendsCount: increment(1) }),
+          updateDoc(theirRef, { friends: arrayUnion(currentUid), friendsCount: increment(1) })
+        ]);
+        btn.textContent = '✓';
+        btn.style.color = 'var(--teal)';
+        showToast(`✅ ${name} добавлен в друзья!`);
+        friendsList.push(uid);
+        const sf = document.getElementById('statFriends');
+        if (sf) sf.textContent = parseInt(sf.textContent || '0') + 1;
+        await _loadFriendsBlock();
+        await _loadSuggestedUsers();
+      } catch (e) {
+        btn.disabled = false;
+        btn.textContent = '+ Add';
+        showToast('⚠️ Ошибка');
+      }
+    };
+
+    /* LOAD ALL FRIENDS (expand) */
+    window.loadAllFriends = async function () {
+      const container = document.getElementById('friendsListContainer');
+      if (!container) return;
+      container.innerHTML = `<div style="color:var(--muted);font-size:13px;text-align:center;padding:10px 0;">Загружаем...</div>`;
+      try {
+        const friendDocs = await Promise.all(friendsList.map(uid => getDoc(doc(db, 'users', uid))));
+        container.innerHTML = '';
+        const COLORS = ['#00A896', '#5BBDB5', '#007F72', '#38D68A', '#4A90D9', '#9B59B6', '#E67E22', '#E05A7A'];
+        const strColor = str => { let h = 0; for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h); return COLORS[Math.abs(h) % COLORS.length]; };
+        friendDocs.forEach((fSnap, i) => {
+          if (!fSnap.exists()) return;
+          const fd = fSnap.data();
+          const uid = friendsList[i];
+          const name = fd.fullName || fd.nick || 'Пользователь';
+          const initLetter = name[0].toUpperCase();
+          const row = document.createElement('div');
+          row.className = 'sf-row';
+          row.innerHTML = `
+            <div class="sf-av" onclick="window.location.href='profile.html?uid=${uid}'" style="cursor:pointer;">
+              ${fd.photoUrl ? `<img src="${fd.photoUrl}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">` : `<div class="sf-av-init" style="background:${strColor(name)};">${initLetter}</div>`}
+              <div class="sf-dot"></div>
+            </div>
+            <div onclick="window.location.href='profile.html?uid=${uid}'" style="flex:1;cursor:pointer;">
+              <div class="sf-name">${name}</div>
+              <div class="sf-tag">@${fd.nick || 'user'}</div>
+            </div>
+            <button class="sf-follow" onclick="window.location.href='Chat.html?uid=${uid}'">💬</button>`;
+          container.appendChild(row);
+        });
+      } catch (e) { container.innerHTML = `<div style="color:var(--muted);font-size:13px;">Ошибка загрузки</div>`; }
+    };
+
+    /* AVATAR UPLOAD — сохраняет в Storage постоянно */
+    window.handleAvatarUpload = async function (input) {
+      if (!isOwnProfile) return;
+      const file = input.files[0];
+      if (!file) return;
+      input.value = '';
+
+      // Показываем превью сразу
+      const reader = new FileReader();
+      reader.onload = e => _applyAvatarUrl(e.target.result);
+      reader.readAsDataURL(file);
+
+      showToast('⏳ Загружаю фото...');
+      try {
+        // Загружаем в Firebase Storage
+        const storageRef = ref(storage, `avatars/${currentUid}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+
+        // Сохраняем URL в Firestore — фото будет постоянным
+        await updateDoc(doc(db, 'users', currentUid), { photoUrl: url });
+        if (currentUserData) currentUserData.photoUrl = url;
+
+        // Применяем постоянный URL
+        _applyAvatarUrl(url);
+        _updateHeaderAvatar({ photoUrl: url });
+        showToast('✅ Фото сохранено навсегда!');
+      } catch (err) {
+        console.error('avatarUpload:', err);
+        showToast('⚠️ Ошибка загрузки фото');
+      }
+    };
+
+    /* BANNER UPLOAD — сохраняет в Storage постоянно */
+    window.handleBannerUpload = async function (input) {
+      if (!isOwnProfile) return;
+      const file = input.files[0];
+      if (!file) return;
+      input.value = '';
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const bImg = document.getElementById('bannerImg');
+        if (bImg) { bImg.src = e.target.result; bImg.style.display = 'block'; }
+        const bPh = document.getElementById('bannerPlaceholder');
+        if (bPh) bPh.style.display = 'none';
+      };
+      reader.readAsDataURL(file);
+      showToast('⏳ Загружаю обложку...');
+
+      try {
+        const storageRef = ref(storage, `banners/${currentUid}`);
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        await updateDoc(doc(db, 'users', currentUid), { bannerUrl: url });
+        if (currentUserData) currentUserData.bannerUrl = url;
+
+        const bImg = document.getElementById('bannerImg');
+        if (bImg) bImg.src = url;
+        showToast('✅ Обложка сохранена!');
+      } catch (err) {
+        console.error('bannerUpload:', err);
+        showToast('⚠️ Ошибка загрузки обложки');
+      }
+    };
+
+    /* TOAST */
+    let _toastTimer;
+    window.showToast = function (msg) {
+      const el = document.getElementById('toastEl');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(_toastTimer);
+      _toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+    };
+
+    /* POMODORO */
+    const CIRC = 2 * Math.PI * 50;
+    let pomoTotal = 25 * 60, pomoLeft = 25 * 60, pomoRunning = false;
+    let pomoTimer = null, pomoSession = 1;
+    const pad = n => String(n).padStart(2, '0');
+
+    window.renderPomo = function () {
+      const m = Math.floor(pomoLeft / 60), s = pomoLeft % 60;
+      const txt = document.getElementById('pomoTxt');
+      const ring = document.getElementById('pomoRing');
+      if (txt) txt.textContent = `${m}:${pad(s)}`;
+      if (ring) ring.style.strokeDashoffset = CIRC * (1 - pomoLeft / pomoTotal);
+    };
+    window.setPomoIcon = function (playing) {
+      const el = document.getElementById('pomoIcon');
+      if (!el) return;
+      el.outerHTML = playing
+        ? '<svg id="pomoIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+        : '<svg id="pomoIcon" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+    };
+    window.togglePomo = function () {
+      if (pomoRunning) {
+        clearInterval(pomoTimer); pomoRunning = false; setPomoIcon(false);
+      } else {
+        pomoRunning = true; setPomoIcon(true);
+        pomoTimer = setInterval(() => {
+          if (pomoLeft <= 0) {
+            clearInterval(pomoTimer); pomoRunning = false; setPomoIcon(false);
+            pomoSession++;
+            const ps = document.getElementById('pomoSession');
+            if (ps) ps.textContent = `Session ${pomoSession} · Done! 🎉`;
+            showToast('⏱ Сессия завершена! Отдыхай 🌿');
+            return;
+          }
+          pomoLeft--; renderPomo();
+        }, 1000);
+      }
+    };
+    window.resetPomo = function () { clearInterval(pomoTimer); pomoRunning = false; pomoLeft = pomoTotal; renderPomo(); setPomoIcon(false); };
+    window.skipPomo = function () { clearInterval(pomoTimer); pomoRunning = false; pomoLeft = 0; renderPomo(); setPomoIcon(false); };
+    window.setPomo = function (mode, mins) {
+      clearInterval(pomoTimer); pomoRunning = false;
+      pomoTotal = pomoLeft = mins * 60; renderPomo(); setPomoIcon(false);
+      document.querySelectorAll('.pomo-tab').forEach(b => b.classList.remove('on'));
+      const pt = document.getElementById('pt-' + mode);
+      if (pt) pt.classList.add('on');
+      const labels = { focus: 'FOCUS', short: 'BREAK', long: 'LONG BREAK' };
+      const pm = document.getElementById('pomoMode');
+      const ps = document.getElementById('pomoSession');
+      if (pm) pm.textContent = labels[mode];
+      if (ps) ps.textContent = mode === 'focus' ? `Session ${pomoSession} · Stay locked in 🎯` : 'Rest time · Recharge ☕';
+    };
+    renderPomo();
+
+    // После загрузки профиля — грузим предложенных пользователей
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(_loadSuggestedUsers, 2000);
+    });
+
+  </script>
+
+  <!-- ════ МОБИЛЬНАЯ НИЖНЯЯ НАВИГАЦИЯ ════ -->
+  <nav class="mob-nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+      Лента
+    </a>
+    <a href="public.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+      </svg>
+      Обсуждения
+    </a>
+    <a href="Chat.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        <circle cx="12" cy="10" r="1" />
+        <circle cx="8" cy="10" r="1" />
+        <circle cx="16" cy="10" r="1" />
+      </svg>
+      Чат
+    </a>
+    <a href="trainings.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <rect x="3" y="3" width="7" height="7" />
+        <rect x="14" y="3" width="7" height="7" />
+        <rect x="14" y="14" width="7" height="7" />
+        <rect x="3" y="14" width="7" height="7" />
+      </svg>
+      Тренинги
+    </a>
+    <a href="profile.html" class="active">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
+      </svg>
+      Профиль
+    </a>
+  </nav>
+
+</body>
+
+</html>
