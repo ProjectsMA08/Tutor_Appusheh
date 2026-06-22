@@ -2493,8 +2493,7 @@
       collection, addDoc, query, where, orderBy, getDocs,
       onSnapshot, serverTimestamp, arrayUnion, arrayRemove, increment
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL }
-      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import { uploadToCloudinary } from "./cloudinary-upload.js";
 
     /* ══════════════════════════════════════
        FIREBASE INIT
@@ -2510,7 +2509,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     /* ══════════════════════════════════════
        ГЛОБАЛЬНОЕ СОСТОЯНИЕ
@@ -3607,10 +3605,8 @@
 
       showToast('⏳ Загружаю фото...');
       try {
-        // Загружаем в Firebase Storage
-        const storageRef = ref(storage, `avatars/${currentUid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
+        // Загружаем в Cloudinary
+        const url = await uploadToCloudinary(file, 'avatars');
 
         // Сохраняем URL в Firestore — фото будет постоянным
         await updateDoc(doc(db, 'users', currentUid), { photoUrl: url });
@@ -3644,9 +3640,7 @@
       showToast('⏳ Загружаю обложку...');
 
       try {
-        const storageRef = ref(storage, `banners/${currentUid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
+        const url = await uploadToCloudinary(file, 'banners');
         await updateDoc(doc(db, 'users', currentUid), { bannerUrl: url });
         if (currentUserData) currentUserData.bannerUrl = url;
 
