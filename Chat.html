@@ -2100,9 +2100,7 @@
             getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, deleteDoc,
             arrayUnion, query, where, orderBy, limit, onSnapshot, serverTimestamp, increment
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-        import {
-            getStorage, ref as storageRef, uploadBytes, getDownloadURL
-        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+        import { uploadToCloudinary } from "./cloudinary-upload.js";
 
         /* ─── Firebase init ─── */
         const firebaseConfig = {
@@ -2116,7 +2114,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         /* ─── State ─── */
         let me = null;
@@ -2913,13 +2910,10 @@
             clearFilePreview();
 
             const isImage = file.type.startsWith('image/');
-            const path = `chat_files/${chatId}/${Date.now()}_${file.name}`;
-            const sRef = storageRef(storage, path);
 
             try {
                 toast('⏳ Загрузка файла...');
-                const snap = await uploadBytes(sRef, file);
-                const url = await getDownloadURL(snap.ref);
+                const url = await uploadToCloudinary(file, `chat_files/${chatId}`);
 
                 const payload = {
                     chatId, senderId: me.uid, senderName: me.name,
@@ -2936,11 +2930,7 @@
                 toast('✅ Файл отправлен!');
             } catch (e) {
                 console.error('sendFile:', e);
-                if (e.code === 'storage/unauthorized') {
-                    toast('⚠️ Нет прав для загрузки файлов. Проверьте Firebase Storage Rules.');
-                } else {
-                    toast('⚠️ Ошибка при загрузке файла');
-                }
+                toast('⚠️ Ошибка при загрузке файла');
             }
         }
 
