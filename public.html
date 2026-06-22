@@ -2612,7 +2612,7 @@
       onSnapshot, query, orderBy, limit, where,
       runTransaction, serverTimestamp, arrayUnion, arrayRemove, increment
     } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
-    import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js';
+    import { uploadToCloudinary } from './cloudinary-upload.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyBQ9UYY6uh3CgXzytNwt_r2LCwaXval9T8",
@@ -2626,7 +2626,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     let currentUser = null, currentProfile = null, feedUnsub = null;
     const likedCache = new Map(), commentUnsubs = new Map();
@@ -3031,9 +3030,7 @@
         // Upload image if present
         if (typeof pendingImgFile !== 'undefined' && pendingImgFile) {
           try {
-            const storageRef = ref(storage, `post_images/${currentUser.uid}_${Date.now()}`);
-            const snap = await uploadBytes(storageRef, pendingImgFile);
-            imageUrl = await getDownloadURL(snap.ref);
+            imageUrl = await uploadToCloudinary(pendingImgFile, 'post_images');
           } catch (e) { console.warn('[Upload]', e); toast('⚠️ Фото не загрузилось, пост без фото'); }
         }
 
