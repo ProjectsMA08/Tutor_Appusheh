@@ -1637,8 +1637,7 @@
       collection, addDoc, query, where, getDocs,
       serverTimestamp, orderBy
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL }
-      from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+    import { uploadToCloudinary } from "./cloudinary-upload.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBQ9UYY6uh3CgXzytNwt_r2LCwaXval9T8",
@@ -1652,7 +1651,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
 
     /* ── STATE ── */
     let currentUid = null;
@@ -1952,9 +1950,7 @@
       showToast('⏳ Загружаю фото...');
 
       try {
-        const storageRef = ref(storage, `avatars/${currentUid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
+        const url = await uploadToCloudinary(file, 'avatars');
         setAvatarDisplay(url, currentUserData?.fullName || '');
         document.getElementById('headerAvatar').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`;
         await updateDoc(doc(db, 'users', currentUid), { photoUrl: url });
@@ -1983,9 +1979,7 @@
       showToast('⏳ Загружаю обложку...');
 
       try {
-        const storageRef = ref(storage, `banners/${currentUid}`);
-        await uploadBytes(storageRef, file);
-        const url = await getDownloadURL(storageRef);
+        const url = await uploadToCloudinary(file, 'banners');
         const bi = document.getElementById('bannerImg');
         bi.src = url; bi.style.display = 'block';
         await updateDoc(doc(db, 'users', currentUid), { bannerUrl: url });
